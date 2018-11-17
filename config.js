@@ -1,4 +1,4 @@
-/*
+/**
  * Config
  **/
 
@@ -18,6 +18,8 @@ const currentEnvironment = typeof(process.env.NODE_ENV) === 'string'
   ? process.env.NODE_ENV.toLowerCase() 
   : '';
 
-module.exports = typeof(environments[currentEnvironment]) == 'object' 
+const config = typeof(environments[currentEnvironment]) == 'object' 
   ? environments[currentEnvironment]
   : environments.staging;
+
+module.exports = config;
