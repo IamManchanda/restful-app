@@ -6,18 +6,15 @@ const http = require('http');
 const https = require('https');
 const url = require('url');
 const { StringDecoder } = require('string_decoder');
-const config = require('./config');
 const fs = require('fs');
 
-const handlers = {};
-handlers.ping = (data, callback) => { 
-  callback(200); 
-};
-handlers.notFound = (data, callback) => { 
-  callback(404);
-};
+const config = require('./lib/config');
+const handlers = require('./lib/handlers');
+const helpers = require('./lib/helpers');
+
 const router = { 
   ping: handlers.ping,
+  users: handlers.users,
 };
 
 const unifiedServer = (request, response) => {
@@ -35,7 +32,11 @@ const unifiedServer = (request, response) => {
   request.on('end', () => {
     payload = `${payload}${decoder.end()}`;
     let chosenHandler = (typeof(router[path]) !== 'undefined') ? router[path] : handlers.notFound;
-    const data = { path, queryStringObject, method, headers, payload };
+    const data = { 
+      path, queryStringObject, method, headers, 
+      payload: helpers.parseJsonToObject(payload), 
+    };
+    
     chosenHandler(data, (statusCode, payloadParam) => {
       statusCode = (typeof(statusCode) === 'number') ? statusCode : 200;
       payloadParam = (typeof(payloadParam) === 'object') ? payloadParam : {};

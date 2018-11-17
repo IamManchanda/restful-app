@@ -1,0 +1,7 @@
+{
+  "firstName": "myName",
+  "lastName": "mySirname",
+  "password": "mySecretPassword",
+  "phone": "1234567890",
+  "tosAgreement": true
+}
