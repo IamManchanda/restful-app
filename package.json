@@ -1,0 +1,11 @@
+{
+  "name": "restful-app",
+  "version": "1.0.0",
+  "description": "Restful app!",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "serve:stage": "NODE_ENV=staging node index.js",
+    "serve:prod": "NODE_ENV=production node index.js"
+  }
+}
