@@ -1,6 +1,6 @@
-/**
+/*
  * Node.js
- **/
+ */
 
 const http = require('http');
 const https = require('https');
@@ -12,7 +12,7 @@ const config = require('./lib/config');
 const handlers = require('./lib/handlers');
 const helpers = require('./lib/helpers');
 
-const router = { 
+const router = {
   ping: handlers.ping,
   users: handlers.users,
 };
@@ -31,18 +31,20 @@ const unifiedServer = (request, response) => {
   });
   request.on('end', () => {
     payload = `${payload}${decoder.end()}`;
-    let chosenHandler = (typeof(router[path]) !== 'undefined') ? router[path] : handlers.notFound;
-    const data = { 
-      path, queryStringObject, method, headers, 
-      payload: helpers.parseJsonToObject(payload), 
+    const chosenHandler = (typeof (router[path]) !== 'undefined') ? router[path] : handlers.notFound;
+    const data = {
+      path,
+      queryStringObject,
+      method,
+      headers,
+      payload: helpers.parseJsonToObject(payload),
     };
-    
     chosenHandler(data, (statusCode, payloadParam) => {
-      statusCode = (typeof(statusCode) === 'number') ? statusCode : 200;
-      payloadParam = (typeof(payloadParam) === 'object') ? payloadParam : {};
-      let payloadParamString = JSON.stringify(payloadParam);
+      statusCode = (typeof (statusCode) === 'number') ? statusCode : 200;
+      payloadParam = (typeof (payloadParam) === 'object') ? payloadParam : {};
+      const payloadParamString = JSON.stringify(payloadParam);
       response.setHeader('Content-Type', 'application/json');
-      response.writeHead(statusCode)
+      response.writeHead(statusCode);
       response.end(payloadParamString);
       console.log('Returning this response: ', statusCode, payloadParamString);
     });
